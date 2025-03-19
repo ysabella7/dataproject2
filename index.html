@@ -1,78 +1,30 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plotly Interactive Graphs</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <style>
-    /* General Styles */
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #0a192f;
-      color: #ffffff;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-    }
-
-    /* Container Styling */
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0px 0px 15px rgba(0, 173, 239, 0.5);
-      text-align: center;
-    }
-
-    /* Header Styling */
-    h1 {
-      font-size: 2em;
-      color: #00a3e0;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
-    }
-
-    /* Graph Styling */
-    .graph {
-      background: rgba(255, 255, 255, 0.15);
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
-      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    }
-
-    .graph:hover {
-      transform: scale(1.02);
-      box-shadow: 0px 0px 20px rgba(0, 173, 239, 0.7);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .container {
-        width: 95%;
-      }
-
-      h1 {
-        font-size: 1.8em;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Graphs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-  <div class="container">
-    <h1>Plotly Interactive Graphs</h1>
-    <div class="graph">{{ bar_chart | safe }}</div>
-    <div class="graph">{{ line_chart | safe }}</div>
-    <div class="graph">{{ scatter_chart | safe }}</div>
-  </div>
+
+    <div class="container">
+        <h1>Interactive Graphs</h1>
+
+        <!-- Navigation Links -->
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('recommendations') }}">Recommendations</a></li>
+                <li><a href="{{ url_for('suggestions') }}">Suggestions</a></li>
+            </ul>
+        </nav>
+
+        <!-- Your Graphs -->
+        <div class="graph">{{ bar_chart | safe }}</div>
+        <div class="graph">{{ line_chart | safe }}</div>
+        <div class="graph">{{ scatter_chart | safe }}</div>
+
+    </div>
+
 </body>
 </html>
