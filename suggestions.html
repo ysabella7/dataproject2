@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AR2 Web form</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<body>
+  
+  <nav>
+    <a href="/">Info & Graphs</a>
+    <a href="/recommendations">Recommendations</a>
+    <a href="/suggestions">Suggestions</a>
+  </nav>
+
+<div class="container">
+  
+<h1> Javascript Webform (AR2): Suggestions to add more data </h1>
+<h2> (with validation AR2b and 3 datatypes AR2a) </h2>
+
+<form id="suggestions-form">
+  
+  <label for="data"> What data should be added to this website? (Type a string of text) </label><br><br>
+  <!-- Label for a text input field. The for attribute in the <label> -->
+
+  <input type="text" id="data" required><br><br>
+  <!-- Text input field for the user to specify the data -->
+
+  <label for="year"> What year does the data come from? (Type the integer year) </label><br><br>
+  <!-- Label for a number input field -->
+
+  <input type="number" id="year" min="0" max="9999" required><br><br>
+  <!-- Number input field with validation for integer year -->
+
+  <label for="reliability"> How would you rate this data for reliability? (Type a float)</label><br><br>
+  <!-- Label for a float input field -->
+
+   <input type="number" id="reliability" step="0.1" min="1.0" max="10.0" required><br><br>
+  <!-- Number input field with step validation for float values -->
+
+  <label for="permission"> ___? (Type a Boolean here)</label><br><br>
+  <!-- Label for a dropdown to select a boolean value -->
+
+  <select id="permission" required>
+    <!-- Dropdown menu for Yes/No selection -->
+    <option value=""> Select Boolean Value </option>
+    <option value="Y"> True </option>
+    <option value="N"> False </option>
+  </select><br><br>
+
+  <button type ="button" onclick="savedata()">Submit</button>
+  <!-- Button to submit data, triggering the 'savedata' function -->
+
+  <button type ="button" onclick="cleardata()">Clear</button>
+  <!-- Button to clear all data, triggering the 'cleardata' function -->
+  
+</form>
+
+<h2>Summary of submitted suggestions displayed: (AR2c) </h2>
+<!-- Heading for the data summary table -->
+
+<table id="data-table">
+  <!-- Table to display submitted suggestions -->
+  
+  <thead> <!-- The thead tag is used to group the header content in a table -->
+    
+    <tr><!-- tr means this is a row -->
+      <th>Data</th> <!-- header cell for 'data' column -->
+      <th>Year</th> <!-- header cell for 'year' column -->
+      <th>Reliability</th> <!-- header cell for 'reliability' column -->
+      <th>Permission</th> <!-- header cell for 'permission' column -->
+    </tr>
+  </thead>
+  
+  <tbody>
+    <!-- placeholder for dynamically added table rows -->
+    <!-- get JS to add stuff in here later when the user enters data -->
+  </tbody>
+</table>
+
+</div>
+
+<script>
+  function saveData() {
+    // saves user-submitted data to localStorage and updates the table
+
+  const data = document.getElementById('data').value;
+    // retrieves the value in the entered in the 'data' input field
+
+  const year = document.getElementById('year').value;
+    // retrieves the value in the entered in the 'year' input field
+
+  const reliability = document.getElementById('reliability').value;
+    // retrieves the value in the entered in the 'reliability' input field
+
+  const permission = document.getElementById('permission').value;
+    // retrieves the value in the entered in the 'permission' input field
+
+  if (!data || !year || !reliability || !permission) {
+    // validates that all fields are filled
+    alert("Please fill in all the fields");
+    return;
+  }
+
+  const newData = { data, year, reliability, permission};
+    // creates an object to hold the submitted data
+
+  const suggestions = JSON.parse(localStorage.getItem('suggestions')) || [];
+    // retrieves existing suggestions from localStorage, or initialises an empty array
+
+  suggestions.push(newData);
+    // adds the new data to the suggestions array
+
+  localStorage.setItem('suggestions', JSON.stringify(suggestions))
+    // saves the updated suggestions array back to localStorage
+
+  loadTable();
+    // calls the function to update the table with the new data 
+}
+
+  function loadTable() {
+    // populates the table with data from localStorage
+    
+    const tableBody = document.querySelector('#data-table...tb')
+    // selects the table body where rows will be added
+
+    tableBody.innerHTML = '';
+    // clears any existing rows in the table body
+
+    const suggestions = JSON.parse(localStorage.getItem('suggestions'))
+    // retrieves existing suggestions from localStorage, or initialises an empty array
+
+    suggestions.forEach(item => {
+      // loops through each suggestion in the array
+      const row = document.createElement('tr');
+      // creates a new table row element
+                        
+      row.innerHTML = `
+        <td>${item.data}</td>
+        <td>${item.year}</td>
+        <td>${item.reliability}</td>
+        <td>${item.permission}</td>
+      `;
+      // populates the row with data values 
+
+      tableBody.appendChild(row);
+      // appends the row to the table body
+    });
+  }
+
+  function clearData() {
+    // clears all data from localStorage and the table
+
+    if (confirm("Are you sure you want to clear all data?")) {
+      localStorage.removeItem('suggestions');
+        // removes the suggestions key from localStorage
+      loadTable();
+      // updates the table to reflect the cleared data
+    }
+
+  document.addEventListener('DOMContentLoaded', loadTable);
+  // automatically loads the table data when the page is loaded
+      
+                        }                        
+</script>
+  
+</body>
+</html>
